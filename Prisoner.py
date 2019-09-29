@@ -2,11 +2,6 @@
 Prisoner superclass
 """
 class Prisoner():
-    
-    """
-    Prisoner's name
-    """
-    name = "Prisoner"
 
     """
     Constructor. Called once at the start of each match.
