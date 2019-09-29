@@ -5,8 +5,6 @@ TitForTat: a Prisoner who copies their opponent's last choice.
 """
 class TitForTat(Prisoner):
     
-    name = "TitForTat"
-    
     """
     This strategy requires remembering the opponent's
     last choice, so the class overrides the constructor
