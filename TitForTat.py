@@ -1,3 +1,5 @@
+from Prisoner import Prisoner
+
 """
 TitForTat: a Prisoner who copies their opponent's last choice.
 """
