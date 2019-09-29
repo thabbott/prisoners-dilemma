@@ -153,7 +153,7 @@ class Tournament():
     print("Validating %s" % species.__name__)
     print("Scores against self: %d, %d" % (s1, s2))
     print("Time: %.2f ms" % (end - start))
-    success = (end - start < 10)
+    success = (end - start < 50)
     
     # Test that species can play against others
     for other in others:
