@@ -16,7 +16,6 @@ class TitForTat(Prisoner):
     """
     def __init__(self):
         self.last_strategy = True
-        return self
     
     """
     This Prisoner always does what their opponent did last
