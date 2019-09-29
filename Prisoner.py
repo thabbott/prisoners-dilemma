@@ -17,7 +17,7 @@ class Prisoner():
     rounds of a match but not between matches.
     """
     def __init__(self):
-        return self
+        pass
     
     """
     Pick a strategy: return True to cooperate; return False to defect.
