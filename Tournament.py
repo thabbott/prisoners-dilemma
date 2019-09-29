@@ -1,10 +1,10 @@
 from itertools import combinations
 from random import shuffle
+import time
 
 """
 Prisoners' dilemma tournament
 """
-
 class Tournament():
 
   """
@@ -107,9 +107,9 @@ class Tournament():
   
   Returns
   -------
-  
+  (int, int): scores for prisoner1 and prisoner2
   """
-  def play_match(self, prisoner1, prisoner2):
+  def play_match(self, prisoner1, prisoner2, n_rounds = None):
     
     # Create instances of each prisoner
     p1 = prisoner1()
@@ -120,7 +120,9 @@ class Tournament():
     score2 = 0
     
     # Play all rounds
-    for n in range(self.n_rounds):
+    if not n_rounds:
+      n_rounds = self.n_rounds
+    for n in range(n_rounds):
       strategy1 = p1.pick_strategy()
       strategy2 = p2.pick_strategy()
       scores = self.score(strategy1, strategy2)
@@ -131,6 +133,37 @@ class Tournament():
       
     # Return scores
     return (score1, score2)
+
+  """
+  Pre-tournament testing: model must play itself 1000 times
+  in less than 1/100 s and succesfully play Jesus, Lucifer,
+  and TitForTat
+  """
+  def test_species(self, species):
+    
+    # Time species playing against itself
+    s1 = 0
+    s2 = 0
+    start = time.thread_time()
+    for ii in range(1000):
+        (score1, score2) = self.play_match(species, species, 1000)
+        s1 += score1
+        s2 += score2
+    end = time.thread_time()
+    print("Validating %s" % species.__name__)
+    print("Scores against self: %d, %d" % (s1, s2))
+    print("Time: %.2f ms" % (end - start))
+    success = (end - start < 10)
+    
+    # Test that species can play against others
+    for other in [Jesus, Lucifer, TitForTat]:
+        try:
+            self.play_match(species, other, 1000)
+            print("Successfully played %s" % other.__name__)
+        except:
+            success = False
+            print("Failed against %s" % other.__name__)
+    return success
     
   """
   Play a round robin tournament
