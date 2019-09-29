@@ -40,6 +40,7 @@ class Tournament():
     
     # Tally total score for each species
     total_score = 0
+    self.fitness = len(self.species) * [0]
     for ii, prisoner in enumerate(self.prisoners):
       for jj, species in enumerate(self.species):
         if prisoner == species:
@@ -48,6 +49,10 @@ class Tournament():
           
     # Calculate points per prisoner
     points_per_prisoner = total_score // self.total_prisoners
+    
+    # Catch some corner cases
+    if points_per_prisoner < 1:
+        points_per_prisoner = 1
     
     # Convert scores to prisoners
     for ii, species in enumerate(self.species):
@@ -142,9 +147,10 @@ class Tournament():
     
     # Pay all matches
     for match in matches:
+      
       (score1, score2) = self.play_match(
-        self.prisoner[match[0]], 
-        self.prisoner[match[1]])
+        self.prisoners[match[0]], 
+        self.prisoners[match[1]])
       self.scores[match[0]] += score1
       self.scores[match[1]] += score2
       
@@ -166,22 +172,21 @@ class Tournament():
     # Sort species list by number of members
     def sort_key(val):
       return val[1]
-    tally.sort(key = sort_key)
+    tally.sort(key = sort_key, reverse = True)
     
     # Create string representation
     max_members = tally[0][1]
     line_cols = 75
-    members_per_hash = max_members // line_cols
-    if members_per_hash < 1:
-      members_per_hash = 1
+    members_per_hash = float(max_members) / line_cols
     string_repr = ""
     for t in tally:
       string_repr += ("%s " % t[0])
-      num_hashes = t[1] // members_per_hash - len(t[0]) - 1
+      num_hashes = 0
+      if members_per_hash > 0:
+        num_hashes = round(float(t[1]) / members_per_hash) - len(t[0]) - 1
       if num_hashes < 0:
         num_hashes = 0
       string_repr += ("#" * num_hashes)
-      string_repr.ljust(line_cols)
-      string_repr += "%d\n" % t[1]
+      string_repr += " %d\n" % t[1]
       
     return string_repr
