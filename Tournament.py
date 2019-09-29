@@ -62,7 +62,7 @@ class Tournament():
   -------
   
   """
-  def play_match(prisoner1, prisoner2):
+  def play_match(self, prisoner1, prisoner2):
     
     # Create instances of each prisoner
     p1 = prisoner1()
@@ -92,7 +92,7 @@ class Tournament():
   ----------
   n_rounds: number of rounds per match
   """
-  def round_robin(self, n_rounds):
+  def round_robin(self):
     
     # Create a list of all combinations of prisoners
     matches = combinations(range(len(self.prisoners)), 2)
