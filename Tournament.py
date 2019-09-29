@@ -5,7 +5,7 @@ from random import shuffle
 Prisoners' dilemma tournament
 """
 
-class Tournament()
+class Tournament():
 
   """
   Initialize the tournament
