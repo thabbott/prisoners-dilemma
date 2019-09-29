@@ -1,3 +1,5 @@
+from Prisoner import Prisoner
+
 """
 Jesus: a Prisoner who always cooperates
 """
