@@ -136,10 +136,10 @@ class Tournament():
 
   """
   Pre-tournament testing: model must play itself 1000 times
-  in less than 1/100 s and succesfully play Jesus, Lucifer,
-  and TitForTat
+  in less than 1/100 s and succesfully play species listed
+  in others.
   """
-  def test_species(self, species):
+  def test_species(self, species, others):
     
     # Time species playing against itself
     s1 = 0
@@ -156,7 +156,7 @@ class Tournament():
     success = (end - start < 10)
     
     # Test that species can play against others
-    for other in [Jesus, Lucifer, TitForTat]:
+    for other in others:
         try:
             self.play_match(species, other, 1000)
             print("Successfully played %s" % other.__name__)
