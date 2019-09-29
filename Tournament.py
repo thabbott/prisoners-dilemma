@@ -100,6 +100,8 @@ class Tournament():
     
     # Pay all matches
     for match in matches:
-      (score1, score2) = self.play_match(prisoner[match[0]], prisoner[match[1]], n_rounds)
+      (score1, score2) = self.play_match(
+        self.prisoner[match[0]], 
+        self.prisoner[match[1]])
       self.scores[match[0]] += score1
       self.scores[match[1]] += score2
