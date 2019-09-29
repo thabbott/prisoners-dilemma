@@ -1,4 +1,4 @@
-from itertools import combination
+from itertools import combinations
 from random import shuffle
 
 """
