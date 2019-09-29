@@ -1,3 +1,5 @@
+from Prisoner import Prisoner
+
 """
 Lucifer: a Prisoner who always defects.
 """
