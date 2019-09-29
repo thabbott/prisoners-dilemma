@@ -14,10 +14,32 @@ class Tournament():
   ----------
   prisoners: list of competing Prisoner subclasses
   n_rounds: rounds per match
+  n_repl: number of initial replicants of each prisoner
   """
-  def __init__(self, prisoners, n_rounds):
-    self.prisoners = prisoners
+  # TODO: support non-zero number of replicants
+  def __init__(self, species, n_rounds, n_repl):
+    self.species = species
     self.n_rounds = n_rounds
+    self.fitness = len(self.species) * [n_repl]
+    self.repopulate()
+    
+  """
+  Evaluate fitness of each species
+  
+  Ultimately, this needs to assign the right number of replicants to each species.
+  What's the right formula??
+  """
+  def evaluate_fitness(self):
+    # TODO: implement
+    pass
+  
+  """
+  Repopulate prisoners: one per unit fitness of each species
+  """
+  def repopulate(self):
+    self.prisoners = []
+    for ii in range(len(self.species)):
+        self.prisoners.extend(self.fitness[ii] * [self.species[ii]])
     self.scores = len(self.prisoners) * [0]
     
   """
