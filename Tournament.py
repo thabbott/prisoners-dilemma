@@ -19,19 +19,39 @@ class Tournament():
   # TODO: support non-zero number of replicants
   def __init__(self, species, n_rounds, n_repl):
     self.species = species
-    self.n_rounds = n_rounds
     self.fitness = len(self.species) * [n_repl]
+    self.total_prisoners = len(self.species) * n_repl
+    self.n_rounds = n_rounds
     self.repopulate()
     
   """
-  Evaluate fitness of each species
+  Evaluate fitness of each species, proceeding as follows:
   
-  Ultimately, this needs to assign the right number of replicants to each species.
-  What's the right formula??
+  - Tally the total number of points earned each round
+  as well as the total number of points per species
+  
+  - Calculate the number of points required to earn a prisoner
+  for the next round as
+    (points from previous round) // (population of the tournament)
+  
+  - Allocate a whole number of prisoners to each species, rounding down
   """
   def evaluate_fitness(self):
-    # TODO: implement
-    pass
+    
+    # Tally total score for each species
+    total_score = 0
+    for ii, prisoner in enumerate(self.prisoners):
+      for jj, species in enumerate(self.species):
+        if prisoner isa species:
+          self.fitness[jj] += self.scores[ii]
+          total_score += self.scores[ii]
+          
+    # Calculate points per prisoner
+    points_per_prisoner = total_score // self.total_prisoners
+    
+    # Convert scores to prisoners
+    for ii, species in enumerate(self.species):
+      self.fitness[ii] = self.fitness[ii] // points_per_prisoner   
   
   """
   Repopulate prisoners: one per unit fitness of each species
@@ -127,3 +147,29 @@ class Tournament():
         self.prisoner[match[1]])
       self.scores[match[0]] += score1
       self.scores[match[1]] += score2
+      
+  """
+  Override __str__ for display in REPL.
+  Prints list of species sorted by number of members
+  """
+  def __str__(self):
+    
+    # Tally number of members per species
+    tally = len(self.species) * [("", 0)]
+    for ii, species in enumerate(self.species):
+      tally[ii][0] = species.__name__
+      for prisoner in self.prisoners:
+        if prisoner isa species:
+          tally[ii][1] += 1
+    
+    # Sort species list by number of members
+    def sort_key(val):
+      return val[1]
+    tally.sort(key = sort_key)
+    
+    # Create string representation
+    string_repr = ""
+    for t in tally:
+      string_repr.append("%s %d\n" % t)
+    return string_repr
+      
