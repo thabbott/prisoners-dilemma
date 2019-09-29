@@ -95,10 +95,11 @@ class Tournament():
   def round_robin(self):
     
     # Create a list of all combinations of prisoners
-    matches = combinations(range(len(self.prisoners)), 2)
+    matches = list(combinations(range(len(self.prisoners)), 2))
+    shuffle(matches)
     
     # Pay all matches
-    for match in shuffle(matches):
+    for match in matches:
       (score1, score2) = self.play_match(prisoner[match[0]], prisoner[match[1]], n_rounds)
       self.scores[match[0]] += score1
       self.scores[match[1]] += score2
