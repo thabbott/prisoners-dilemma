@@ -5,9 +5,8 @@ class Prisoner():
 
     """
     Constructor. Called once at the start of each match.
-    Override this method to give your prisoner a name
-    and, if needed, to initialize any 
-    auxiliary data you want to use toto determine your 
+    If needed, override this method to initialize any 
+    auxiliary data you want to use to determine your 
     Prisoner's strategy. This data will persist between
     rounds of a match but not between matches.
     """
