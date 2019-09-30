@@ -15,7 +15,7 @@ while True:
         break
     print("\n")
     tournament.round_robin()
-    tournament.evaluate_fitness()
+    tournament.reproduce()
     tournament.repopulate()
     print("Results:")
     print(tournament)
