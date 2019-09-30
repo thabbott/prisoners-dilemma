@@ -31,9 +31,9 @@ class Tournament():
     # Calculate total score and number of members
     # of each species
     n = len(self.species) * [0]
-    score = len(self.species] * [0.0]
-    for ii, prisoner in self.prisoners:
-      for jj, species in self.species:
+    score = len(self.species) * [0.0]
+    for ii, prisoner in enumerate(self.prisoners):
+      for jj, species in enumerate(self.species):
         if prisoner == species:
           n[jj] += 1
           score[jj] += float(self.scores[ii])
@@ -41,10 +41,15 @@ class Tournament():
     # Calculate fitness
     fitness = len(self.species) * [0.0]
     average_fitness = 0.0
+    n_alive = 0
     for ii in range(len(fitness)):
-      fitness[ii] = score[ii] / n[ii]
-      average_fitness += fitness[ii]
-    average_fitness = average_fitness / len(fitness)
+      if n[ii] > 0:
+          fitness[ii] = score[ii] / n[ii]
+          average_fitness += fitness[ii]
+          n_alive += 1
+      else:
+          fitness[ii] = 0
+    average_fitness = average_fitness / n_alive
     
     # Update frequencies
     for ii in range(len(self.frequency)):
@@ -57,8 +62,8 @@ class Tournament():
                 
     # Update list of prisoners
     self.prisoners = []
-    for ii, species in self.species:
-      nmembers = round(self.frequency[ii] * self.total_population)
+    for ii, species in enumerate(self.species):
+      nmembers = round(self.frequency[ii] * self.population_size)
       self.prisoners.extend(nmembers * [species])
     
     # Re-initialize scores
@@ -191,7 +196,7 @@ class Tournament():
   def __str__(self):
 
     # Sort species list by number of members
-    population = zip(self.species, self.frequency)
+    population = list(zip(self.species, self.frequency))
     def sort_key(val):
       return val[1]
     population.sort(key = sort_key, reverse = True)
@@ -199,5 +204,5 @@ class Tournament():
     # Create and return string representation
     string_repr = ""
     for p in population:
-      string_repr += ("%s %.2f\n" % tally)     
+      string_repr += ("%s %.2f\n" % (p[0].__name__, p[1]))     
     return string_repr
