@@ -45,8 +45,8 @@ class Tournament():
     for ii in range(len(fitness)):
       if n[ii] > 0:
           fitness[ii] = score[ii] / n[ii]
-          average_fitness += fitness[ii]
-          n_alive += 1
+          average_fitness += n[ii] * fitness[ii]
+          n_alive += n[ii]
       else:
           fitness[ii] = 0
     average_fitness = average_fitness / n_alive
