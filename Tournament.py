@@ -14,57 +14,54 @@ class Tournament():
   ----------
   prisoners: list of competing Prisoner subclasses
   n_rounds: rounds per match
-  n_repl: number of initial replicants of each prisoner
+  n_repl: number of replicants of each species
   """
-  # TODO: support non-zero number of replicants
   def __init__(self, species, n_rounds, n_repl):
     self.species = species
-    self.fitness = len(self.species) * [n_repl]
-    self.total_prisoners = len(self.species) * n_repl
+    self.frequency = len(self.species) * [1.0/len(self.species)]
+    self.population_size = n_repl * len(self.species)
     self.n_rounds = n_rounds
     self.repopulate()
     
   """
-  Evaluate fitness of each species, proceeding as follows:
-  
-  - Tally the total number of points earned each round
-  as well as the total number of points per species
-  
-  - Calculate the number of points required to earn a prisoner
-  for the next round as
-    (points from previous round) // (population of the tournament)
-  
-  - Allocate a whole number of prisoners to each species, rounding down
+  Use discrete-time replicator dynamics to update species frequencies
   """
-  def evaluate_fitness(self):
+  def reproduce(self):
     
-    # Tally total score for each species
-    total_score = 0
-    self.fitness = len(self.species) * [0]
-    for ii, prisoner in enumerate(self.prisoners):
-      for jj, species in enumerate(self.species):
+    # Calculate total score and number of members
+    # of each species
+    n = len(self.species) * [0]
+    score = len(self.species] * [0.0]
+    for ii, prisoner in self.prisoners:
+      for jj, species in self.species:
         if prisoner == species:
-          self.fitness[jj] += self.scores[ii]
-          total_score += self.scores[ii]
-          
-    # Calculate points per prisoner
-    points_per_prisoner = total_score // self.total_prisoners
+          n[jj] += 1
+          score[jj] += float(self.scores[ii])
     
-    # Catch some corner cases
-    if points_per_prisoner < 1:
-        points_per_prisoner = 1
+    # Calculate fitness
+    fitness = len(self.species) * [0.0]
+    average_fitness = 0.0
+    for ii in range(len(fitness)):
+      fitness[ii] = score[ii] / n[ii]
+      average_fitness += fitness[ii]
+    average_fitness = average_fitness / len(fitness)
     
-    # Convert scores to prisoners
-    for ii, species in enumerate(self.species):
-      self.fitness[ii] = self.fitness[ii] // points_per_prisoner   
-  
+    # Update frequencies
+    for ii in range(len(self.frequency)):
+      self.frequency[ii] = self.frequency[ii] * fitness[ii] / average_fitness
+                
   """
-  Repopulate prisoners: one per unit fitness of each species
+  Re-populate prisoners based on species frequencies
   """
   def repopulate(self):
+                
+    # Update list of prisoners
     self.prisoners = []
-    for ii in range(len(self.species)):
-        self.prisoners.extend(self.fitness[ii] * [self.species[ii]])
+    for ii, species in self.species:
+      nmembers = round(self.frequency[ii] * self.total_population)
+      self.prisoners.extend(nmembers * [species])
+    
+    # Re-initialize scores
     self.scores = len(self.prisoners) * [0]
     
   """
@@ -81,20 +78,20 @@ class Tournament():
   Returns
   -------
   (score1, score2): (int, int)
-    (1,1) if both cooperate, 
-    (0,0) if both defect, and 
-    (2,0) or (0,2) if one cooperates and one defects
+    (3,3) if both cooperate, 
+    (1,1) if both defect, and 
+    (5,0) or (0,5) if one cooperates and one defects
   """
   def score(self, strategy1, strategy2):
     
     if strategy1 and strategy2:
-      return (1, 1)
+      return (3, 3)
     elif not strategy1 and strategy2:
-      return (2, 0)
+      return (5, 0)
     elif strategy1 and not strategy2:
-      return (0, 2)
+      return (0, 5)
     else:
-      return (0, 0)
+      return (1, 1)
       
     
   """
@@ -192,34 +189,15 @@ class Tournament():
   Prints list of species sorted by number of members
   """
   def __str__(self):
-    
-    # Tally number of members per species
-    tally = []
-    for ii, species in enumerate(self.species):
-      num_members = 0
-      for prisoner in self.prisoners:
-        if prisoner == species:
-          num_members += 1
-      tally.append((species.__name__, num_members))
-    
+
     # Sort species list by number of members
+    population = zip(self.species, self.frequency)
     def sort_key(val):
       return val[1]
-    tally.sort(key = sort_key, reverse = True)
+    population.sort(key = sort_key, reverse = True)
     
-    # Create string representation
-    max_members = tally[0][1]
-    line_cols = 75
-    members_per_hash = float(max_members) / line_cols
+    # Create and return string representation
     string_repr = ""
-    for t in tally:
-      string_repr += ("%s " % t[0])
-      num_hashes = 0
-      if members_per_hash > 0:
-        num_hashes = round(float(t[1]) / members_per_hash) - len(t[0]) - 1
-      if num_hashes < 0:
-        num_hashes = 0
-      string_repr += ("#" * num_hashes)
-      string_repr += " %d\n" % t[1]
-      
+    for p in population:
+      string_repr += ("%s %.2f\n" % tally)     
     return string_repr
