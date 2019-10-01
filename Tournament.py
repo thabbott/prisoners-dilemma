@@ -135,37 +135,6 @@ class Tournament():
       
     # Return scores
     return (score1, score2)
-
-  """
-  Pre-tournament testing: model must play itself 1000 times
-  in less than 1/100 s and succesfully play species listed
-  in others.
-  """
-  def test_species(self, species, others):
-    
-    # Time species playing against itself
-    s1 = 0
-    s2 = 0
-    start = time.thread_time()
-    for ii in range(1000):
-        (score1, score2) = self.play_match(species, species, 1000)
-        s1 += score1
-        s2 += score2
-    end = time.thread_time()
-    print("Validating %s" % species.__name__)
-    print("Scores against self: %d, %d" % (s1, s2))
-    print("Time: %.2f ms" % (end - start))
-    success = (end - start < 50)
-    
-    # Test that species can play against others
-    for other in others:
-        try:
-            self.play_match(species, other, 1000)
-            print("Successfully played %s" % other.__name__)
-        except:
-            success = False
-            print("Failed against %s" % other.__name__)
-    return success
     
   """
   Play a round robin tournament
