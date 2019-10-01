@@ -64,4 +64,4 @@ To submit your strategy, email me a python source file containing your subclass 
 1. Checking that it can play a 1000 round match against itself in less than 100 ms and
 1. Checking that it can play long matches against Jesus, Lucifer, TitForTat, and randomly-generated strategies without producing exceptions.
 
-If you want me to, I'm happy to test your implementation before the deadline so that you have time to fix errors, and I'll put the tests in a file in the repository that you all can use sometime soon.
+If you want me to, I'm happy to test your implementation before the deadline so that you have time to fix any issues that come up, and I'll put the tests in a file in the repository that you all can use sometime soon.
