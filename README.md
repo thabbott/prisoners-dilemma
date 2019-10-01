@@ -10,7 +10,7 @@ The iterated prisoners' dilemma is a competition between prisoners that consists
 
 ## Tournament rules
 
-This tournament was inspired by a [Radiolab episode](https://www.stitcher.com/podcast/wnycs-radiolab/e/63973084) that described a similar tournament run by [Robert Axelrod](https://en.wikipedia.org/wiki/Robert_Axelrod) in the 1960s---listen from 7:30 to --:-- for an overview of the motivation for the tournament and a description of the tournament itself.
+This tournament was inspired by a [Radiolab episode](https://www.stitcher.com/podcast/wnycs-radiolab/e/63973084) that described a similar tournament run by [Robert Axelrod](https://en.wikipedia.org/wiki/Robert_Axelrod) in the 1960s---listen from 7:30 to about 17:40 for an overview of the motivation for the tournament and a description of the tournament itself.
 
 In this tournament, prisoners compete as members of a "species" that specifies a strategy for them to follow. At the start of the tournament, each species is allocated an equal fraction of the total population of prisoners. The tournament then proceeds in two repeated phases:
 
@@ -21,3 +21,47 @@ In this tournament, prisoners compete as members of a "species" that specifies a
 The tournament terminates when populations fractions reach a steady state (or, if some species use non-deterministic strategies, when populations appear to have reached a statistically steady state), and the species with the highest population fraction is the winner.
 
 ## Preparing submissions
+
+To submit a strategy, create a subclass of the ``Prisoner`` class defined in ``Prisoner.py`` and override the ``__init__``, ``pick_strategy``, and ``process_results`` functions. ``Jesus.py``, ``Lucifer.py``, and ``TitForTat.py`` include example submissions corresponding to the Jesus, Lucifer, and tit-for-tat strategies mentioned for the podcast. I will submit all three of of them to the tournament, and in the meantime you can use them as reference strategies to test your submissions against.
+
+I'm planning to run the tournament on Binder and have set up an environment that includes numpy, scipy, sklearn, and pandas in addition to the Python standard library. If there are other Python packages you want your strategy to be able to use, I'm happy to try to add them.
+
+The functions that your strategy implements are used to play matches by passing your subclass to the following function:
+
+```
+def play_match(self, prisoner1, prisoner2, n_rounds = None):
+    
+    # Create instances of each prisoner
+    p1 = prisoner1()
+    p2 = prisoner2()
+    
+    # Initialize scores
+    score1 = 0
+    score2 = 0
+    
+    # Play all rounds
+    if not n_rounds:
+      n_rounds = self.n_rounds
+    for n in range(n_rounds):
+      strategy1 = p1.pick_strategy()
+      strategy2 = p2.pick_strategy()
+      scores = self.score(strategy1, strategy2)
+      score1 += scores[0]
+      score2 += scores[1]
+      p1.process_results(strategy1, strategy2)
+      p2.process_results(strategy2, strategy1)
+      
+    # Return scores
+    return (score1, score2)
+```
+
+In other words, ``__init__`` is called once at the start of a match; and in each round, ``pick_strategy`` is called to determine the strategies of each prisoner, the strategies are scored, and the strategies are passed back to ``process_results`` to allow each prisoner to store information to use in subsequent rounds.
+
+Because this tournament style involves many round-robins, which involve many matches, which themselves involve many rounds, your strategies have to be fairly efficient: specifically, I ask that you submit a strategy that can play a 1000 round match against itself in less than 100 ms. (This provides a reasonable amount of leeway: the tit-for-tat strategy can play itself 1000 times in about 1 ms.) You can test this easily by passing two copies of your strategy to ``play_match`` and including ``n_rounds = 1000`` as a keyword argument---see ``validate.py`` for example code that times the ``Jesus``, ``Lucifer``, and ``TitForTat`` strategies.
+
+To submit your strategy, email me a python source file containing your subclass **by 5PM on Monday, October 21**. I'll test your program by
+
+1. Checking that it can play a 1000 round match against itself in less than 100 ms and
+1. Checking that it can play long matches against Jesus, Lucifer, TitForTat, and randomly-generated strategies without producing exceptions.
+
+If you want me to, I'm happy to test your implementation before the deadline so that you have time to fix errors, and I'll put the tests in a file in the repository that you all can use sometime soon.
