@@ -7,13 +7,23 @@ from TitForTat import TitForTat
 species = [Jesus, Lucifer, TitForTat]
 tournament = Tournament(species, 200, 10)
 
-# Validate species
+# Time species
 valid = True
 for sp in species:
     print("")
-    success = tournament.test_species(sp, species)
-    if not success:
-        print("%s failed validation" % sp.__name__)
-        valid = False
+    s1 = 0
+    s2 = 0
+    start = time.thread_time()
+    for ii in range(1000):
+        (score1, score2) = self.play_match(sp, sp, 1000)
+        s1 += score1
+        s2 += score2
+    end = time.thread_time()
+    print("Validating %s" % species.__name__)
+    print("Scores against self: %d, %d" % (s1, s2))
+    print("Time: %.2f ms" % (end - start))
+    valid = valid and (end - start < 100)
+
+# Print results
 if valid:
-  print("All species passed validation")
+    print("All species passed validation")
