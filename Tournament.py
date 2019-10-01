@@ -102,10 +102,18 @@ class Tournament():
   """
   Play a single match
   
-  Parameters:
-  prisoner1: subclass of prisoner
-  prisoner2: subclass of prisoner
-  n_rounds: number of rounds
+  Parameters
+  ----------
+  prisoner1: subclass of Prisoner
+    First prisoner competing in the match
+    
+  prisoner2: subclass of Prisoner
+    Second prisoner competing in the match
+    
+  n_rounds: int, optional
+    Number of rounds in the match. If no value is
+    provided, the number of rounds defaults to
+    the default value for the tournament.
   
   Returns
   -------
@@ -137,11 +145,7 @@ class Tournament():
     return (score1, score2)
     
   """
-  Play a round robin tournament
-  
-  Parameters
-  ----------
-  n_rounds: number of rounds per match
+  Play a round robin
   """
   def round_robin(self):
     
@@ -150,8 +154,7 @@ class Tournament():
     shuffle(matches)
     
     # Pay all matches
-    for match in matches:
-      
+    for match in matches:     
       (score1, score2) = self.play_match(
         self.prisoners[match[0]], 
         self.prisoners[match[1]])
@@ -160,7 +163,7 @@ class Tournament():
       
   """
   Override __str__ for display in REPL.
-  Prints list of species sorted by number of members
+  Prints list of species sorted by population fraction
   """
   def __str__(self):
 
