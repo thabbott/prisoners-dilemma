@@ -1,0 +1,8 @@
+name: ipd-tournament
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - scipy
+  - sklearn
+  - pandas
