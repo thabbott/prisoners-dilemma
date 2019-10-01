@@ -177,9 +177,9 @@ class Tournament():
     string_repr = ""
     line_cols = 80
     for p in population:
-      string_repr += ("%s %.2f " % (p[0].__name__, p[1]))
-      num_hashes = round(80 * p[1]) - len(string_repr)
+      tmp_string = ("%s %.2f " % (p[0].__name__, p[1]))
+      num_hashes = round(80 * p[1]) - len(tmp_string)
       if num_hashes < 0:
         num_hashes = 0
-      string_repr += ("#" * num_hashes + "\n")
+      string_repr += tmp_string + ("#" * num_hashes + "\n")
     return string_repr
