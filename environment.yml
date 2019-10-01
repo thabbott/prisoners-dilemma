@@ -4,5 +4,5 @@ channels:
 dependencies:
   - numpy
   - scipy
-  - sklearn
+  - scikit-learn
   - pandas
