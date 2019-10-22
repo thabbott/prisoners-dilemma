@@ -2,10 +2,23 @@ from Tournament import Tournament
 from Jesus import Jesus
 from Lucifer import Lucifer
 from TitForTat import TitForTat
+from Telepath import Telepath
+from BahHumbug import BahHumbug
+from FelizNavidad import FelizNavidad
+from Inv_Judas import Inv_Judas
+from Judas import Judas
+from MasonPrisoner import MasonPrisoner
+from Random import Random
+from SchizophrenicRetribution import SchizophrenicRetribution
+from TitForTat_Avg import TitForTat_Avg
+from XmasTruce import XmasTruce
 import time
 
 # Create tournament
-species = [Jesus, Lucifer, TitForTat]
+species = [Jesus, Lucifer, TitForTat, Telepath,
+    BahHumbug, FelizNavidad, Inv_Judas, Judas,
+    MasonPrisoner, Random, SchizophrenicRetribution,
+    TitForTat_Avg, XmasTruce]
 tournament = Tournament(species, 200, 10)
 
 # Time species

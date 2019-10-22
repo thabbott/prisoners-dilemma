@@ -4,9 +4,9 @@ from Lucifer import Lucifer
 from TitForTat import TitForTat
 
 # Create tournament
-species = [Jesus, Lucifer, TitForTat]
-tournament = Tournament(species, 200, 10)
-        
+ species = [Jesus, Lucifer, TitForTat]
+tournament = Tournament(species, 200, 5)
+
 # Run tournament
 print(tournament)
 while True:
